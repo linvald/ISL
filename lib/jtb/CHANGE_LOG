@@ -1,0 +1,174 @@
+This file lists the changes from version to version of JTB.  For more details 
+regarding the changes, please see the JTB documentation.
+
+
+JTB VERSION CHANGES
+-------------------
+
+  1.2.2  - Completed 8/1/00
+         - Added -r option.
+
+  1.2.1  - Completed 9/22/99
+         - The bug in startAtNextToken option of TreeDumper was fixed.
+
+  1.2    - Completed 5/24/99
+         - JTB now generates one more interface -- ObjectVisitor, and 
+           one more class -- ObjectDepthFirst which implements 
+           ObjectVisitor. In ObjectVisitor and ObjectDepthFirst, return
+           value and argument are supported.
+         - All the nodes have one more accept method:
+              Object accept(visitor.Visitor v, Object argu)
+         - Fixed the problem with <EOF> -- automatically increase the 
+           column number of <EOF> by 1.
+
+  1.1.2  - Completed 4/1/99
+         - Resolved node constructor setParent() issue by adding a check for
+           null parameters.
+         - Added "-pp" parameter to allow turning on or off of parent pointers.
+         - Added "-f" parameter to generate descriptive node class field names.
+         - Added "-ns" parameter to allow user to specify a superclass for all
+           node classes.
+         - Added a new convenience constructor with all constant tokens in
+           a production already "filled in", in order to aid in manual
+           construction of syntax trees.
+  1.1.1  - Completed 2/6/99
+         - Bootstrapped using version 1.1--no real changes from 1.1pre5
+         - Added line number reporting to most errors and warnings
+         - Fixed Java-expression-in-lookahead bug
+         - Fixed token manager formatting bug
+         - Fixed token manager grammar bug
+
+  1.1    - Completed 1/10/99
+         - Bootstrapped using version 1.1pre5, an unreleased earlier version
+           of 1.1 final.
+         - Added "kind" field to NodeTokens
+         - Added getParent() and setParent() to all Nodes
+         - Added a semantic checker to catch problematic JTB code
+         - Added some convenience constructors to the NodeXxxx classes.
+         - The Node interface now extends Serializable.
+         - Command-line parameter changes:
+            - Added shortcut option "-p".
+            - Added the "-e" option to turn off the semantic checker.
+            - Removed "=" from -o, -np, and -vp options
+            - Removed the "-vn" option and the JTB debugging options
+         - Fixed java-block-in-production bug.
+         - Fixed extra parentheses bug.
+         - Fixed empty NodeChoice bug.
+
+  1.1pre4- Completed 11/9/98
+         - Added the "Tree Printing" toolkit, consisting of the following:
+            - TreeDumper visitor to output the contents of the parse tree
+              based on the information in the token location variables.
+            - TreeFormatter visitor--a pretty printer template.  Makes
+              writing pretty printers easier and faster.
+         - Command-line option "-w" causes JTB to not overwrite already
+           existing files.
+
+  1.1pre3- Completed 9/13/98
+         - Visitor is now an interface.  DepthFirstVisitor is now generated
+           and performs the same task as Visitor did in previous versions (i.e.
+           visit all the nodes in the tree).
+         - JavaCC Token fields beginLine, endLine, beginColumn, and endColumn
+           are now stored in NodeTokens
+            - specialToken field of NodeToken now stores a list of NodeTokens
+              as opposed to Strings like it did in 1.1pre2.
+         - Command-line option "-jd" generates JavaDoc-friendly comments in
+           the Visitor and syntax tree classes.
+
+  1.1pre2- Completed 4/22/98
+         - Bootstrapped using version 1.1pre1, parser built using JavaCC 0.7.1
+            - should use memory more efficiently now.
+         - Implemented a mechanism for saving and accessing JavaCC special
+           tokens within the JTB parse tree.
+
+  1.1pre1- Completed 2/28/98.
+         - Bootstrapped using version 1.0, parser built using JavaCC 0.7
+         - Implemented a Scheme tree builder toolkit.  Creates:
+            - a scheme record definition file
+            - a SchemeTreeBuilder visitor to generate scheme trees from input
+              files.
+         - Fixed a minor grammar bug with JavaCC options.
+
+  1.0.1  - Completed 1/4/98
+         - Reduced memory consumption.
+         - Not released.
+
+  1.0    - Completed 10/15/97
+         - Added command line option "-vn" to generate older style
+           "visitSomeNode(SomeNode n)" naming.
+         - Release version
+         - All source files added to CVS revision control.
+
+  0.9.0b - Completed 9/21/97
+         - Bootstrapped using version 0.9.0a
+         - Changed method names to utilize overloading
+            - instead of "visitSomeNode(SomeNode n)", method names will now
+              be "visit(SomeNode n)"
+
+  0.9.0a - Completed 9/7/97
+         - Bootstrapped using version 0.9.0
+         - Changed to comply with "accept" and "visit____" naming scheme.
+
+  0.9.0  - Completed 9/4/97
+         - Bootstrapped using version 0.1.0a.
+         - Prepared for release
+         - Changes for consistency with Design Patterns book
+         - Changed visitor method names from NodeCode() to visitNode()
+         - Changed node visit() method names to accept()
+
+  0.1.0a - Completed 8/27/97
+         - Bootstrapped using version 0.1.0
+         - Name changed from VAST to JTB (Java Tree Builder)
+         - Documentation added.
+         - Source code tidied up a little.
+         - All classes moved to package hierarchy EDU.purdue.jtb.*
+
+  0.1.0  - Completed 7/31/97.  Bootstrapped using version 0.0.3a
+         - New features:
+            - The annotator now prints nicely formatted JavaCC code.  This
+              should make it easier to find bugs in the generated code.
+            - It is no longer necessary to manually add import statements for
+              the syntax tree and visitor packages into the grammar file.
+            - NodeList and NodeListOptional now have an elementAt() method.
+            - Added "-cl", "-no", and "-p" command-line options for use in
+              debugging.
+         - Bugs fixed:
+            - Resolved a bug where annotated grammar and generated classes
+              differed with regard to productions such as A := (B C) D.  See
+              current version notes for more details.
+            - Grammar changes:
+               - Fixed the grammar so option names aren't treated as reserved
+                 words; the original, untouched Java1.1.jj will now be parsed
+                 correctly.
+                  - a side effect of this is that option names are no longer
+                    checked for correctness--this is left to JavaCC.
+               - I noticed an error in the JavaCC grammar specification in
+                 the TokenManagerDecls section.  This was confirmed, and
+                 what was Block before is now ClassBodyDeclaration.
+
+  0.0.3a - Completed 7/17/97.
+         - Fixed problem where productions like ( A ( B() )* )* produced
+           improper code where the inner list was appended to rather than
+           recreated each time through the outer list.
+
+  0.0.3  - Completed 7/15/97.
+         - Added command-line options to allow user to specify packages and
+           output filename (run vast with the -h option for help).
+         - Changed instance variables of Node subclasses and Visitor methods
+           to be public so tree nodes and visitors can be separated into
+           different packages, "syntaxtree" and "visitor" by default.
+         - In next version, the default package will be the package of the
+           grammar file (if any), with ".syntaxtree" and ".visitor" appended.
+
+
+  0.0.2  - Completed 7/8/97.
+         - Tidied up the comments above all visitor methods.  They also now
+           show which field belongs to which part of the production.
+         - Generated class files also contain same comments.
+         - Added a "which" field to NodeChoice, where the value of "which"
+           equals 0 for the first choice, 1 for the second, etc.
+
+
+  0.0.1  - Completed 7/3/97.
+         - Initial release.
+

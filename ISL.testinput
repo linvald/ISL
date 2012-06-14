@@ -1,0 +1,36 @@
+	do world where {closed = true} as loginwindow with (users)
+
+	do closed world as loginwindow with (users)
+
+	do every loginwindow as modal {
+		list users where {granted=true}
+		assign user from users
+	}
+
+	do opened world where (name is root) as {
+		list guests
+		do rooms as matrix with (room.number as vertical; calendar.date as 
+horizontal)
+	}
+
+	do known guest as VIP with (*; title = "VIP")
+	do special guest as VIP with (*; title = "Special")
+
+	do every guest as {
+		do name, address as modal
+	}
+	
+	do VIP as {
+		do title
+	}
+	
+	list guests
+	
+	do every list as {
+		do every element
+	}
+
+	do every matrix as {
+	}
+	
+	do x as list{a}; do list as longlist{b}; do longlist as xlonglist{c}

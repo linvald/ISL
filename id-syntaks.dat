@@ -1,0 +1,17 @@
+
+
+<statement> := do <identifier> [where <whereclause>] [as <identifier> [<statement>]] [with <withclause>] |
+		{ <statement> ... <statement> }
+
+<identifier> := <string>
+<identifier-match-expr> := <string-match-expr>
+
+<whereclause> := <wherestatement> | { <wherestatement> ... <wherestatement> }
+<wherestatement> := <identifier> <comparison> <value>
+<comparison> := ">" | ">=" | "<" | "<=" | "="
+<value> := <string> | <number> | <identifier>
+
+<withclause> := <withstatement> | { <withstatement> ... <withstatement> }
+<withstatement> := <value> as <identifier> | <identifier-match-expr>
+<value> := <string> | <number> | <identifier>
+

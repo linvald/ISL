@@ -1,0 +1,207 @@
+
+                              VERSION NOTES
+                              -------------
+
+This document contains notes on each version of JTB.  For more information,
+please see the Release Notes page at the JTB website.
+
+1.2.2
+-------
+   - Added -r option.
+
+1.2.1
+-------
+   - Fixed the bug in startAtNextToken option of TreeDumper.
+
+1.2
+-------
+   - Add ObjectVisitor and ObjectDepthFirst.
+   - Fixed the problem with the location of <EOF>.
+
+
+1.1.2
+-----
+   - Fixed "bug" where node class constructors didn't check if their arguments
+     were null before trying to call setParent() on them.
+   - Added "-pp" parameter.  By default, JTB now does *not* generate parent
+     pointers into node classes.  Use "-pp" to generate them.
+   - Added "-f" parameter for JTB to generate descriptive node class field
+     names such as "whileStatement" and "nodeList1" rather than names like
+     "f1" and "f2".
+   - Added "-ns" parameter to allow user to specify a superclass for all
+     node classes.  This class must be supplied by the user.
+   - Added a new constructor to all node classes which fills in all unchanging
+     tokens such as "+" or "class" with the proper NodeToken to aid in manual
+     syntax tree construction.
+
+
+1.1.1
+-----
+   - Added line number reporting to most error and warning messages.
+   - Fixed a bug which caused a parse error in JTB, when a lookahead statement
+     contains a Java expression, such as LOOKAHEAD(a == b)
+   - Fixed a bug where Java code in the token manager declaration was formatted
+     erroneously in jtb.out.jj.
+   - Fixed a bug in the JTB grammar for token manager declarations.
+
+
+1.1
+---
+   - Added a "kind" field to NodeToken equivalent to the JavaCC Token
+     "kind" field--each type of token has a unique int associated with it.
+   - Added a getParent() and setParent() to the Node interface and classes
+     so any Node's parent may be accessed.
+   - Added a semantic checker to find legal JavaCC code which can cause JTB
+     problems (e.g. javacode productions, extra parentheses, etc.)
+   - The Node interface now extends Serializable--now your parse trees or
+     subtrees can be serialized.
+   - Command-line parameter changes:
+      - Removed the "=" from the -o, -np, and -vp options.  Now you can just
+        type something like this:
+
+          % jtb -np mytree -vp myvisitor mygrammar.jj
+
+        This also fixes a bug which only appeared on the MS Windows platforms.
+      - Added option -p as a shortcut.  Now, instead of having to type
+        "-np foo.mypackage.syntaxtree -vp foo.mypackage.visitor", you can
+        simply type "-p foo.mypackage".  "syntaxtree" and "visitor" are
+        assumed.
+      - Added option -e to turn off the new semantic checker.
+      - Removed the -vn option and JTB debugging options.
+   - Fixed java-block-in-productions bug.
+   - Fixed extra parentheses bug.
+   - Fixed a bug where a production like ( A() | B() { someJavaCode(); } )
+     caused an "Empty NodeChoice" error.
+     
+
+1.1pre4
+-------
+   - Added "Tree Printing" convenience toolkit for printing parse trees.
+      - Command-line option "-printer" generates:
+         - TreeDumper visitor--uses the NodeToken location information
+           (introduced in 1.1pre3) to output contents of the parse tree.
+         - TreeFormatter visitor--a pretty printer skeleton template which
+           makes it easier and faster to write a pretty printer for a grammar.
+            - it works by changing the location information in each NodeToken;
+              afterwards, pass the same tree to the TreeDumper to print it.
+            - Added NodeListInterface which NodeList, NodeListOptional, and
+              NodeSequence all implement.  Shouldn't affect the use of JTB.
+   - Added "-w" command-line option: JTB won't overwrite existing files.
+   - Fixed minor bugs.
+
+1.1pre3
+-------
+   - Visitor is now an interface.  DepthFirstVisitor is now generated
+     and performs the same task as Visitor did in previous versions (i.e.
+     visit all the nodes in the tree).
+      - JavaCC Token fields beginLine, endLine, beginColumn, and endColumn
+        are now stored in NodeTokens
+      - specialToken field of NodeToken now stores a list of NodeTokens
+        as opposed to Strings like it did in 1.1pre2.
+    - Command-line option "-jd" generates JavaDoc-friendly comments in
+      the Visitor and syntax tree classes.
+
+1.1pre2
+-------
+   - Added the capability of saving special nodes in the tree.
+      - Using the command-line option -tk, special tokens are retrieved from
+        the JavaCC Token object that contains it and placed in a Vector in the
+        corresponding JTB NodeToken object.
+      - Special tokens can be accessed through the getNumSpecials() and
+        getSpecialAt() methods.  The withSpecials() method functions like
+        the overridden toString() method, except it returns a string with
+        the special tokens included in order.
+        
+1.1pre1
+-------
+   - Added the Scheme tree builder toolkit.
+      - Command-line option "-scheme" generates:
+         - a file of Scheme records based on the grammar file.
+         - a visitor, SchemeTreeBuilder, which builds a scheme syntax tree
+           for a parsed input file.
+      - There are several constraints that must be placed on a JavaCC grammar:
+         -Choices (i.e. ( x | y )) may only occur at the top level of a
+          production, between nonterminals.
+         - Whatever goes within a list, optional list, or optional must be a
+           single non-terminal.
+
+
+1.0.1
+-----
+   - Reduced memory consumption of JTB: test showed a 25% reduction in memory
+     usage for the JavaPrinter example.
+   - Not released.
+
+
+1.0
+-----
+   - Released publicly
+
+
+0.9.0
+-----
+   - Prepared for release
+   - Bootstrapped using version 0.1.0a.
+   - Visitors written using previous versions of JTB will no longer function
+     correctly.  Every method named "xxxxCode" (where xxxx is the name of a
+     production) must be renamed to "visitxxxx".
+
+
+0.1.0a
+------
+   - Bootstrapped using version 0.1.0.
+
+
+0.1.0 
+-----
+   - Bootstrapped using version 0.0.3a.
+   - Any productions containing a parenthesized expansion, such as (B C) D,
+     (B) C, ((B)*) C, etc. will generate a class which stores a NodeSequence,
+     regardless of the number of nodes in the parentheses.
+      - Note that expansions such as (B | C) D will still generate a class
+        containing a NodeChoice and D.
+
+   - I was originally planning on taking any package declaration in the
+     grammar file and appending the syntax tree and visitor packages onto the
+     end of that (e.g. the grammar was in the package "EDU.purdue.cs.javaparser"
+     then the visitor package would be "EDU.purdue.cs.javaparser.visitor".
+      - I decided against this, since the way the bootstrapped program is
+        set up, only the class containing the main() method was in the default
+        package, and the others were "syntaxtree", "visitor", "misc", and
+        "parser", which all the JavaCC generated files went into.
+      - If I had done what I had planned, the program would've put syntaxtree
+        and visitor into packages parser.syntaxtree and parser.visitor, which
+        would be incorrect.
+      - Thus, it is the programmer's responsibility to put the complete
+        package name as command-line options when running the tool.
+
+
+0.0.3a
+------
+   - To simplify the annotation of the .jj file, I had it convert optionals
+     from [] to ()?.  Tell me if this causes any forseeable problems.
+
+
+0.0.3
+-----
+   - To convert a program constructed with previous versions, you must do the
+     following:
+      - Transferring old visitors to new packages:
+         - Import the package containing the node classes.
+         - Make all the xxxCode methods public (a bit of a pain, but necessary).
+     - Currently, you must manually add an import statment into the grammar
+       file for the syntax tree package (and visitor package, if necessary --
+       will be automatically done in next version, hopefully).
+
+   - Given a package name of javagrammar.tree, the program will create a
+     directory IN THE CURRENT DIRECTORY called "tree" and label each node class
+     as part of the "javagrammar.tree" package.
+      - In other words, no matter how deep the package declaration is, (e.g
+        "a.b.c.d.e"), the directory created will be the last section of the
+        package name (in this case, "e"), in the current directory.
+      - So, it's up to the programmer to make sure the directory structure
+        above the current directory is correct, and that the visitor and node
+        packages are the same up to the last section.
+      - Also, the parser's package must be the parent package of the node
+        and visitor packages (or have no package, if the node and visitor
+        packages don't have parents).

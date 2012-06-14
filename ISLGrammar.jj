@@ -1,0 +1,185 @@
+
+PARSER_BEGIN(ISLParser)
+package javacc_generated;
+import visitor.*;
+
+
+public class ISLParser {
+  public static void main(String args[]) {
+    System.out.println("Reading from standard input...");
+    ISLParser t = new ISLParser(System.in);
+    try {
+      t.Statement();
+    } catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+}
+
+PARSER_END(ISLParser)
+
+/*
+R+ (one or more Rs)
+lR? (zero or one R)
+R* (zero or more Rs)
+*/
+
+/* WHITE SPACE */
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+
+TOKEN: /* KEYWORDS */
+{   
+
+  < DO: "do" >
+| 
+  < WHERE: "where" >
+| 
+  < AS: "as" >
+| 
+  < WITH: "with" >
+  
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER: ["_","a"-"z","A"-"Z"] >
+|
+  < #DIGIT: ["0"-"9"] >   
+|
+  <VALUE: <LETTER> (<LETTER>|<DIGIT>)* >
+}
+
+TOKEN :
+{
+  <LPARAN : "(" > 
+|  
+  <RPARAN : ")" > 
+|
+  <LCURLY:"{">
+|
+  <RCURLY:"}">
+| 
+  <COMMADELIMETER: ","> 
+}
+
+TOKEN:/* OPERATORS */
+{
+  <GREATERTHAN:">">
+|
+  <LESSTHAN:"<">
+|  
+  <EQUALS:"=" | "is">
+|
+  <NOT:"!" | "is not">
+|  
+  <GREATERTHANEQUALS:<GREATERTHAN>(<EQUALS>)>
+|
+  <LESSTHANEQUALS:<LESSTHAN>(<EQUALS>)>
+|
+  <NOTEQUALS:<NOT>(<EQUALS>)>
+}
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+      | <HEX_LITERAL> (["l","L"])?
+      | <OCTAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+}
+
+
+
+void Statement()  : {}
+{
+	(DoCommand())* <EOF>
+}
+
+
+void DoCommand()  : {}
+{
+		<DO><IDENTIFIER> 
+		(WhereClause())?
+		(AsClause())?
+		(WithClause())?| MultiStatement()
+}
+
+void WhereClause()  : {}
+{
+	<WHERE>
+	WhereStatement()
+	|
+	<LCURLY>(<COMMADELIMETER> WhereStatement()) +<RCURLY>
+}
+
+void WhereStatement()  : {}
+{
+	<IDENTIFIER>Comparison() <VALUE>
+}
+
+void AsClause()  : {}
+{
+	<AS>
+	(<IDENTIFIER>)? 
+	(Statement())?
+	|
+	<IDENTIFIER>Statement()
+}
+
+void Comparison()  : {}
+{
+ <GREATERTHAN>
+|<LESSTHAN>
+|<EQUALS>
+|<GREATERTHANEQUALS>
+|<LESSTHANEQUALS>
+|<NOTEQUALS>
+}
+
+void WithClause()  : {}
+{
+  <WITH>	
+  WithStatement()
+}
+
+void WithStatement()  : {}
+{
+	(<VALUE><AS><IDENTIFIER>)
+|
+	(RegEx())
+}
+
+
+void MultiStatement()  : {}
+{
+	<LCURLY>(Statement())+<RCURLY>
+}
+
+void RegEx()  : {}
+{
+	<LPARAN>
+(
+	"*"
+	|
+	"?"<IDENTIFIER>
+)
+	<RPARAN>
+}

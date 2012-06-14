@@ -1,0 +1,68 @@
+Java Tree Builder (JTB) version 1.2.2
+README File
+-------------------------------------
+
+OVERVIEW:
+
+   The Java Tree Builder is a tool designed to be used with the Java Compiler 
+Compiler (JavaCC) parser generator.  Its function is to take a plain JavaCC 
+grammar, generate a set of syntax tree classes based on the productions 
+in the grammar and utilizing the Visitor design pattern; generate a Visitor 
+superclass whose default methods simply visit the children of the current 
+node; and to produce a JavaCC grammar with the proper annotations to 
+build the syntax tree during parsing.  Visitors can then be written to 
+perform various operations on and manipulate the generated syntax tree.
+
+
+WHERE TO OBTAIN JTB:
+   JTB can currently be found at http://www.cs.purdue.edu/jtb.
+This page will have a link to the newest version of the program.  The contents
+of the distribution file are as follows:
+
+   README         - This file.
+   JTB_DOCS       - Currently just a pointer to the JTB web site docs.
+   VERSION_NOTES  - Notes for the current version of JTB.
+   CHANGE_LOG     - Log of changes made with each new version.
+   jtb.jar        - Java archive file containing the JTB class files.
+   bin/jtb        - Automatically generated shell script to execute JTB.
+   src/*          - The source code for the current version.
+
+   In terms of documentation, only the README and JTB_DOCS are necessary to
+read.  The files VERSION_NOTES and CHANGE_LOG are mainly for record keeping.
+
+
+INSTALLATION:
+
+   JTB requires that the following already be installed:
+
+      o JavaCC    -- JTB was built and tested using version 0.7.1 of JavaCC.
+                     Newer versions will probably work, but this cannot be
+                     guaranteed as of this version.
+      o Java 1.1  -- Requires a Java 1.1 compliant virtual machine and
+                     compiler.
+
+   Download the file jtbXXX.class (where XXX is the current version number)
+from the above-mentioned location.  This is a self-installing archive
+created using InstallShield Java Edition, a descendant of the tool used to
+distribute JavaCC.
+
+   Simply run the file using the Java 1.1 VM.  On a UNIX system this would
+look as follows:
+
+   % java jtbXXX
+
+   NOTE: InstallShield will make a note of the Java virtual machine you used
+to run the installer and use this as the one to execute JTB within the
+script.  If for some reason you have multiple VM's (e.g. Javasoft and
+Microsoft), please use the one you wish to use to run JTB.
+
+   Follow InstallShield's on-screen instructions.
+
+   JTB should now be ready to use.  See the file JTB_DOCS for information on
+using JTB.
+
+
+BUG REPORTS, COMMENTS, & SUGGESTIONS:
+
+   Please send bug reports, comments, and suggestions to Wanjun Wang, 
+wanjun@purdue.edu, and/or Jens Palsberg, palsberg@cs.purdue.edu.
